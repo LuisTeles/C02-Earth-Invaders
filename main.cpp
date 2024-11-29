@@ -21,7 +21,7 @@ using namespace std;
 | quantidadeOleoSociedade       | 1B l     |          |
 | quantidadeEnergiaSociedade    | 3B mW    |          |
 | consumoOleoPorDia             | 2 100k l Dia        |
-| consumoEnergiaPorDia          | 48 100k mWh         |
+| consumoEnergiaPorDia          | 48 10k mWh          |
 |                               |          |          |
 |                               | 2M l     | 500 dias |
 |                               | 500k mWh | 250 Dias |
@@ -32,7 +32,7 @@ int calculoDeMaximoDeDias(int consumoDeEnergiaPorDiaDeTodasTropas, long long int
     long long int diasMaximosDeEnergia = (quantidadeTotalDeEnergiaSociedade/consumoDeEnergiaPorDiaDeTodasTropas)/24;
 
     if(diasMaximosDeOleo < diasMaximosDeEnergia){
-        return diasMaximosDeEnergia;
+        return diasMaximosDeOleo;
     } else {
         return diasMaximosDeEnergia;
     }
@@ -71,8 +71,6 @@ int main(){
     int diasMaximos = calculoDeMaximoDeDias( consumoDeEnergiaPorDiaDeTodasTropas,  consumoDeOleoPorDiaDeTodasTropas,  quantidadeTotalDeOleoSociedade,  quantidadeTotalDeEnergiaSociedade);
 
 
-    cout << quantidadeTotalDeEnergiaSociedade << endl;
-    cout << consumoDeEnergiaPorDiaDeTodasTropas << endl;
     cout << diasMaximos << endl;
 
     return 0;
