@@ -120,10 +120,9 @@ float probabilidadeOceania(float forcaMechas)
 }
 
 // Função para recalcular a quantidade todal de Olé e Energia da sociedade de robos após Invasão
-void recalculoPosInvasao()
-{
-    cout << "recalculoPosInvasao";
-}
+
+
+
 
 // Struct de dados para cadastrarmos os dados das tropas de robôs. Dados esses: Consumo de óleo e energia por dia de cada tropa de Mecha's
 struct tropas
@@ -134,6 +133,10 @@ struct tropas
 
 int main()
 {
+    //Variveis para o calculo de perda em batalha
+    int diasPerdidos = 0;
+    int tropasPerdidas = 0;
+
     // DECLARANDO AS VARIÁVEIS DOS VALORES DE ENTRADA
     int quantidadeDeTropas;                          // Cada tropa contem 100k de mechas
     long long int quantidadeTotalDeOleoSociedade;    // Quantidade de óleo total que a sociedade de Mecha's ainda possuem. MEDIDO EM L (litros)
@@ -142,8 +145,8 @@ int main()
     tropas tropas[100];
 
     // VARIÁVEIS PARA CALCULAR OS VALORES DE ENTRADA DE TODAS AS TROPAS
-    int consumoDeOleoPorDiaDeTodasTropas;
-    long long int consumoDeEnergiaPorDiaDeTodasTropas;
+    int consumoDeOleoPorDiaDeTodasTropas = 0;
+    long long int consumoDeEnergiaPorDiaDeTodasTropas = 0;
 
     // VARIÁVEL QUE VAI ARMAZENAR O RETORNO DA FUNÇÃO "calculoDeMaximoDeDias"
     int diasMaximos;
@@ -170,8 +173,26 @@ int main()
          << "Saudacoes, Mecha's! Antes de comecarmos, qual o nome do arquivo .txt do seus relatorios?" << endl
          << endl;
 
-    cin >> nomearq;
-    arqin.open(nomearq, fstream::in);
+    // Este loop while garante que o nome do arquivo vai ser digitado corretamente
+    while (true)
+    {
+        cin >> nomearq;
+        arqin.open(nomearq, fstream::in);
+
+        // Verificar se o arquivo foi aberto com sucesso
+        if (arqin.is_open())
+        {
+            cout << "Arquivo aberto com sucesso!" << endl;
+            break; // Sai do loop se o arquivo foi aberto corretamente
+        }
+        else
+        {
+            cout << endl
+                 << "Erro: O arquivo '" << nomearq << "' nao foi encontrado ou nao pode ser aberto. Por favor, tente novamente." << endl
+                 << endl;
+        }
+    }
+    // Fim do tratamento do nome do arquivo
 
     // Lendo a primeira linha do relatório // Quantidade total de tropas
     getline(arqin >> ws, linha);
@@ -300,8 +321,48 @@ int main()
                  << endl;
             cin >> perdaDeTropas;
         }
+        else
+        {
+            cout << endl
+                 << "||||||||Falha na invasao||||||||" << endl;
 
-        recalculoPosInvasao(); // Void
+            cout << "Quantos dias foram perdidos durante a tentativa? (exemplo: 3)" << endl;
+            cin >> diasPerdidos;
+
+            cout << "Quantas tropas foram perdidas durante a tentativa? (se nao houve perdas: 0)" << endl;
+            cin >> tropasPerdidas;
+
+            // Atualizar recursos com base nos dias perdidos e tropas perdidas
+            quantidadeDeTropas -= tropasPerdidas; // Reduzir tropas
+
+            // Calcular óleo e energia consumidos
+            long long int oleoConsumido = consumoDeOleoPorDiaDeTodasTropas * diasPerdidos;
+            long long int energiaConsumida = consumoDeEnergiaPorDiaDeTodasTropas * diasPerdidos;
+
+            // Evitar que o consumo exceda os recursos disponíveis
+            if (energiaConsumida > quantidadeTotalDeEnergiaSociedade)
+            {
+                energiaConsumida = quantidadeTotalDeEnergiaSociedade;
+            }
+            if (oleoConsumido > quantidadeTotalDeOleoSociedade)
+            {
+                oleoConsumido = quantidadeTotalDeOleoSociedade;
+            }
+
+            // Atualizar os recursos restantes
+            quantidadeTotalDeOleoSociedade -= oleoConsumido;
+            quantidadeTotalDeEnergiaSociedade -= energiaConsumida;
+
+            // Exibir resumo das perdas
+            cout << endl
+                 << consumoDeEnergiaPorDiaDeTodasTropas << endl
+                 << "Resumo das perdas:" << endl
+                 << "Tropas restantes: " << quantidadeDeTropas << endl
+                 << "Oleo restante: " << quantidadeTotalDeOleoSociedade << " litros" << endl
+                 << "Energia restante: " << quantidadeTotalDeEnergiaSociedade << " mW" << endl;
+        }
+
+        // recalculoPosInvasao(); // Void
 
         cout << endl
              << endl
