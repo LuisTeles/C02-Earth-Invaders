@@ -482,6 +482,7 @@ int main()
     }
 
     cout << "//**FIM DO PROGRAMA**//" << endl;
+    //end
 
     return 0;
 }
