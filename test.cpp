@@ -1,4 +1,3 @@
-
 // #include <bits/stdc++.h>
 #include <iostream>
 #include <fstream>
@@ -126,17 +125,7 @@ void calculoDosGanhosEPerdas(int &consumoDeOleoPorDiaDeTodasTropas, long long in
 
     // Calcular óleo e energia consumidos
     long long int oleoConsumido = consumoDeOleoPorDiaDeTodasTropas * diasPerdidos;
-    long long int energiaConsumida = consumoDeEnergiaPorDiaDeTodasTropas * diasPerdidos;
-
-    // Evitar que o consumo exceda os recursos disponíveis
-    if (energiaConsumida > quantidadeTotalDeEnergiaSociedade)
-    {
-        energiaConsumida = quantidadeTotalDeEnergiaSociedade;
-    }
-    if (oleoConsumido > quantidadeTotalDeOleoSociedade)
-    {
-        oleoConsumido = quantidadeTotalDeOleoSociedade;
-    }
+    long long int energiaConsumida = consumoDeEnergiaPorDiaDeTodasTropas * (diasPerdidos * 24);
 
     // Atualizar os recursos restantes
     quantidadeTotalDeOleoSociedade -= oleoConsumido;
@@ -145,6 +134,16 @@ void calculoDosGanhosEPerdas(int &consumoDeOleoPorDiaDeTodasTropas, long long in
     // Para calcular o ganho de óleo e energia, se houve algum
     quantidadeTotalDeOleoSociedade += ganhoDeOleo;
     quantidadeTotalDeEnergiaSociedade += ganhoDeEnergia;
+
+    // Evitar que o consumo exceda os recursos disponíveis
+    if (energiaConsumida > quantidadeTotalDeEnergiaSociedade)
+    {
+        quantidadeTotalDeEnergiaSociedade = 0;
+    }
+    if (oleoConsumido > quantidadeTotalDeOleoSociedade)
+    {
+        quantidadeTotalDeOleoSociedade = 0;
+    }
 }
 
 // Struct de dados para cadastrarmos os dados das tropas de robôs. Dados esses: Consumo de óleo e energia por dia de cada tropa de Mecha's
@@ -158,10 +157,10 @@ int main()
 {
 
     // DECLARANDO AS VARIÁVEIS DOS VALORES DE ENTRADA
-    int quantidadeDeTropas;                          // Cada tropa contem 100k de mechas
-    long long int quantidadeTotalDeOleoSociedade;    // Quantidade de óleo total que a sociedade de Mecha's ainda possuem. MEDIDO EM L (litros)
-    long long int quantidadeTotalDeEnergiaSociedade; // Quantidade de energia total que a sociedade de Mecha's ainda possuem. MEDIDO EM mW(megaWatts)
-    int i;                                           // Variável de controle
+    int quantidadeDeTropas = 0;                          // Cada tropa contem 100k de mechas
+    long long int quantidadeTotalDeOleoSociedade = 0;    // Quantidade de óleo total que a sociedade de Mecha's ainda possuem. MEDIDO EM L (litros)
+    long long int quantidadeTotalDeEnergiaSociedade = 0; // Quantidade de energia total que a sociedade de Mecha's ainda possuem. MEDIDO EM mW(megaWatts)
+    int i;                                               // Variável de controle
     DadosTropas tropas[100];
 
     // VARIÁVEIS PARA CALCULAR OS VALORES DE ENTRADA DE TODAS AS TROPAS
@@ -169,14 +168,14 @@ int main()
     long long int consumoDeEnergiaPorDiaDeTodasTropas = 0;
 
     // VARIÁVEL QUE VAI ARMAZENAR O RETORNO DA FUNÇÃO "calculoDeMaximoDeDias"
-    int diasMaximos;
+    int diasMaximos = 0;
 
     // VARIÁVEIS REFERENTE A INVASÃO
     int qntContinentes = 0;
     string continentesAcesso[5];
     char exito; // Variável que irá armazenar o resultado de uma invasão dos robos
     char continuarInvadindo = 'y';
-    float forcaMechas;
+    float forcaMechas = 0;
 
     // Variveis para o calculo de perda em batalha
     int diasPerdidos = 0;
@@ -363,14 +362,6 @@ int main()
             // Chamando a função novamente para recalcular o novo número máximo de dias que os Mecha's tem apra invadir
             diasMaximos = calculoDeMaximoDeDias(consumoDeEnergiaPorDiaDeTodasTropas, consumoDeOleoPorDiaDeTodasTropas, quantidadeTotalDeOleoSociedade, quantidadeTotalDeEnergiaSociedade);
 
-            // Exibir resumo dos ganhos
-            cout << endl
-                 << "////Resumo dos ganhos////" << endl
-                 << "Dias restantes: " << diasMaximos << endl
-                 << "Tropas restantes: " << quantidadeDeTropas << endl
-                 << "Oleo restante: " << quantidadeTotalDeOleoSociedade << " litros" << endl
-                 << "Energia restante: " << quantidadeTotalDeEnergiaSociedade << " mW" << endl;
-
             // Condição para caso houver perdas de tropas
             if (tropasPerdidas > 0)
             {
@@ -387,6 +378,16 @@ int main()
                     consumoDeEnergiaPorDiaDeTodasTropas += tropas[i].consumoDeEnergiaPorDiaTropa;
                 }
             }
+
+            // Exibir resumo dos ganhos
+            cout << endl
+                 << consumoDeEnergiaPorDiaDeTodasTropas << endl
+                 << consumoDeOleoPorDiaDeTodasTropas << endl
+                 << "////Resumo dos ganhos////" << endl
+                 << "Dias restantes: " << diasMaximos << endl
+                 << "Tropas restantes: " << quantidadeDeTropas << endl
+                 << "Oleo restante: " << quantidadeTotalDeOleoSociedade << " litros" << endl
+                 << "Energia restante: " << quantidadeTotalDeEnergiaSociedade << " mW" << endl;
         }
         else
         {
@@ -428,6 +429,8 @@ int main()
 
             // Exibir resumo das perdas
             cout << endl
+                 << consumoDeEnergiaPorDiaDeTodasTropas << endl
+                 << consumoDeOleoPorDiaDeTodasTropas << endl
                  << "////Resumo das perdas////" << endl
                  << "Dias restantes: " << diasMaximos << endl
                  << "Tropas restantes: " << quantidadeDeTropas << endl
@@ -439,7 +442,7 @@ int main()
         if (quantidadeDeTropas == 0)
         {
             cout << "A quantidade de tropas chegou a 0..." << endl
-                 << "|||||||||FALHA DA MISSÃO|||||||||" << endl
+                 << "|||||||||FALHA DA MISSAO|||||||||" << endl
                  << endl;
 
             cout << "//**FIM DO PROGRAMA**//" << endl;
@@ -450,7 +453,7 @@ int main()
         if (quantidadeTotalDeOleoSociedade == 0)
         {
             cout << "A quantidade de oleo total chegou ao fim..." << endl
-                 << "|||||||||FALHA DA MISSÃO|||||||||" << endl
+                 << "|||||||||FALHA DA MISSAO|||||||||" << endl
                  << endl;
 
             cout << "//**FIM DO PROGRAMA**//" << endl;
@@ -461,7 +464,7 @@ int main()
         if (quantidadeTotalDeEnergiaSociedade == 0)
         {
             cout << "A quantidade de energia total chegou ao fim..." << endl
-                 << "|||||||||FALHA DA MISSÃO|||||||||" << endl
+                 << "|||||||||FALHA DA MISSAO|||||||||" << endl
                  << endl;
 
             cout << "//**FIM DO PROGRAMA**//" << endl;
