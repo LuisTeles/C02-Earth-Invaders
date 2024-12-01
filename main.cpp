@@ -77,7 +77,7 @@ float probabilidadeAfrica(float constanteDeForcaDosHumanos)
 {
     srand(time(0));
     int random = rand() % 101;
-    float probabilidade = ((random / 100.0) + 0.4) * constanteDeForcaDosHumanos;
+    float probabilidade = ((random / 100.0) * 0.14) * constanteDeForcaDosHumanos;
     float vitoria = chanceDeVitoria(probabilidade, constanteDeForcaDosHumanos);
     return vitoria * 100;
 }
@@ -87,7 +87,7 @@ float probabilidadeAmerica(float constanteDeForcaDosHumanos)
 {
     srand(time(0));
     int random = rand() % 101;
-    float probabilidade = ((random / 100.0) + 0.9) * constanteDeForcaDosHumanos;
+    float probabilidade = ((random / 100.0) * 0.14) * constanteDeForcaDosHumanos;
     float vitoria = chanceDeVitoria(probabilidade, constanteDeForcaDosHumanos);
     return vitoria * 100;
 }
@@ -97,7 +97,7 @@ float probabilidadeAsia(float constanteDeForcaDosHumanos)
 {
     srand(time(0));
     int random = rand() % 101;
-    float probabilidade = ((random / 100.0) + 0.6) * constanteDeForcaDosHumanos;
+    float probabilidade = ((random / 100.0) * 0.6) * constanteDeForcaDosHumanos;
     float vitoria = chanceDeVitoria(probabilidade, constanteDeForcaDosHumanos);
     return vitoria * 100;
 }
@@ -107,7 +107,7 @@ float probabilidadeEuropa(float constanteDeForcaDosHumanos)
 {
     srand(time(0));
     int random = rand() % 101;
-    float probabilidade = ((random / 100.0) + 0.8) * constanteDeForcaDosHumanos;
+    float probabilidade = ((random / 100.0) * 0.10) * constanteDeForcaDosHumanos;
     float vitoria = chanceDeVitoria(probabilidade, constanteDeForcaDosHumanos);
     return vitoria * 100;
 }
@@ -117,7 +117,7 @@ float probabilidadeOceania(float constanteDeForcaDosHumanos)
 {
     srand(time(0));
     int random = rand() % 101;
-    float probabilidade = ((random / 100.0) + 0.3) * constanteDeForcaDosHumanos;
+    float probabilidade = ((random / 100.0) * 0.06) * constanteDeForcaDosHumanos;
     float vitoria = chanceDeVitoria(probabilidade, constanteDeForcaDosHumanos);
     return vitoria * 100;
 }
