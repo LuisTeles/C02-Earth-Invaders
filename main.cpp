@@ -30,6 +30,9 @@ using namespace std;
 |                               | 500k mWh | 250 Dias |
 */
 
+//Variavel global que indica o valor numerico basico da forca dos humanos
+float constanteDeForcaDosHumanos = 2600;
+
 // Função que calcula a quantidade máxima de dias que os robos possuem para terem êxito na invasão ao planeta terra
 int calculoDeMaximoDeDias(int consumoDeEnergiaPorDiaDeTodasTropas, long long int consumoDeOleoPorDiaDeTodasTropas, long long int quantidadeTotalDeOleoSociedade, long long int quantidadeTotalDeEnergiaSociedade)
 {
@@ -70,52 +73,52 @@ void ToLower(string &continente)
 }
 
 // Função para calcular a probabilidade de sucesso de uma invasão na África
-float probabilidadeAfrica(float forcaMechas)
+float probabilidadeAfrica(float constanteDeForcaDosHumanos)
 {
     srand(time(0));
     int random = rand() % 101;
-    float probabilidade = ((random / 100.0) + 0.4) * forcaMechas;
-    float vitoria = chanceDeVitoria(probabilidade, forcaMechas);
+    float probabilidade = ((random / 100.0) + 0.4) * constanteDeForcaDosHumanos;
+    float vitoria = chanceDeVitoria(probabilidade, constanteDeForcaDosHumanos);
     return vitoria * 100;
 }
 
 // Função para calcular a probabilidade de sucesso de uma invasão na América
-float probabilidadeAmerica(float forcaMechas)
+float probabilidadeAmerica(float constanteDeForcaDosHumanos)
 {
     srand(time(0));
     int random = rand() % 101;
-    float probabilidade = ((random / 100.0) + 0.9) * forcaMechas;
-    float vitoria = chanceDeVitoria(probabilidade, forcaMechas);
+    float probabilidade = ((random / 100.0) + 0.9) * constanteDeForcaDosHumanos;
+    float vitoria = chanceDeVitoria(probabilidade, constanteDeForcaDosHumanos);
     return vitoria * 100;
 }
 
 // Função para calcular a probabilidade de sucesso de uma invasão na Ásia
-float probabilidadeAsia(float forcaMechas)
+float probabilidadeAsia(float constanteDeForcaDosHumanos)
 {
     srand(time(0));
     int random = rand() % 101;
-    float probabilidade = ((random / 100.0) + 0.6) * forcaMechas;
-    float vitoria = chanceDeVitoria(probabilidade, forcaMechas);
+    float probabilidade = ((random / 100.0) + 0.6) * constanteDeForcaDosHumanos;
+    float vitoria = chanceDeVitoria(probabilidade, constanteDeForcaDosHumanos);
     return vitoria * 100;
 }
 
 // Função para calcular a probabilidade de sucesso de uma invasão na Europa
-float probabilidadeEuropa(float forcaMechas)
+float probabilidadeEuropa(float constanteDeForcaDosHumanos)
 {
     srand(time(0));
     int random = rand() % 101;
-    float probabilidade = ((random / 100.0) + 0.8) * forcaMechas;
-    float vitoria = chanceDeVitoria(probabilidade, forcaMechas);
+    float probabilidade = ((random / 100.0) + 0.8) * constanteDeForcaDosHumanos;
+    float vitoria = chanceDeVitoria(probabilidade, constanteDeForcaDosHumanos);
     return vitoria * 100;
 }
 
 // Função para calcular a probabilidade de sucesso de uma invasão na Oceania
-float probabilidadeOceania(float forcaMechas)
+float probabilidadeOceania(float constanteDeForcaDosHumanos)
 {
     srand(time(0));
     int random = rand() % 101;
-    float probabilidade = ((random / 100.0) + 0.3) * forcaMechas;
-    float vitoria = chanceDeVitoria(probabilidade, forcaMechas);
+    float probabilidade = ((random / 100.0) + 0.3) * constanteDeForcaDosHumanos;
+    float vitoria = chanceDeVitoria(probabilidade, constanteDeForcaDosHumanos);
     return vitoria * 100;
 }
 
@@ -138,11 +141,11 @@ void calculoDosGanhosEPerdas(int &consumoDeOleoPorDiaDeTodasTropas, long long in
     // Evitar que o consumo exceda os recursos disponíveis
     if (energiaConsumida > quantidadeTotalDeEnergiaSociedade)
     {
-        quantidadeTotalDeEnergiaSociedade = 0;
+        quantidadeTotalDeEnergiaSociedade;
     }
     if (oleoConsumido > quantidadeTotalDeOleoSociedade)
     {
-        quantidadeTotalDeOleoSociedade = 0;
+        quantidadeTotalDeOleoSociedade;
     }
 }
 
@@ -269,6 +272,7 @@ int main()
              << "||||||||| AFRICA ||||||||| AMERICA ||||||||| ASIA ||||||||| EUROPA ||||||||| OCEANIA ||||||||| (Ex. de input: 3) - (0 para nenhum)" << endl
              << endl;
 
+        //Tratamento para garantir que o valor de continentes esteja entre 0 e 5
         cin >> qntContinentes;
         while (qntContinentes < 0 || qntContinentes > 5)
         {
@@ -278,6 +282,7 @@ int main()
             cin >> qntContinentes;
         }
 
+        //Entrada de continentes
         if (qntContinentes > 0)
         {
             cout << endl
@@ -356,12 +361,6 @@ int main()
                  << "Qual o ganho de energia? (se nao tiver: 0)" << endl;
             cin >> ganhoDeEnergia;
 
-            // Chamando a função para fazer o recalculo do Oleo e Energia total da sociedade de Mecha's
-            calculoDosGanhosEPerdas(consumoDeOleoPorDiaDeTodasTropas, consumoDeEnergiaPorDiaDeTodasTropas, diasPerdidos, quantidadeTotalDeOleoSociedade, quantidadeTotalDeEnergiaSociedade, ganhoDeOleo, ganhoDeEnergia);
-
-            // Chamando a função novamente para recalcular o novo número máximo de dias que os Mecha's tem apra invadir
-            diasMaximos = calculoDeMaximoDeDias(consumoDeEnergiaPorDiaDeTodasTropas, consumoDeOleoPorDiaDeTodasTropas, quantidadeTotalDeOleoSociedade, quantidadeTotalDeEnergiaSociedade);
-
             // Condição para caso houver perdas de tropas
             if (tropasPerdidas > 0)
             {
@@ -378,6 +377,12 @@ int main()
                     consumoDeEnergiaPorDiaDeTodasTropas += tropas[i].consumoDeEnergiaPorDiaTropa;
                 }
             }
+
+            // Chamando a função para fazer o recalculo do Oleo e Energia total da sociedade de Mecha's
+            calculoDosGanhosEPerdas(consumoDeOleoPorDiaDeTodasTropas, consumoDeEnergiaPorDiaDeTodasTropas, diasPerdidos, quantidadeTotalDeOleoSociedade, quantidadeTotalDeEnergiaSociedade, ganhoDeOleo, ganhoDeEnergia);
+
+            // Chamando a função novamente para recalcular o novo número máximo de dias que os Mecha's tem apra invadir
+            diasMaximos = calculoDeMaximoDeDias(consumoDeEnergiaPorDiaDeTodasTropas, consumoDeOleoPorDiaDeTodasTropas, quantidadeTotalDeOleoSociedade, quantidadeTotalDeEnergiaSociedade);
 
             // Exibir resumo dos ganhos
             cout << endl
@@ -482,7 +487,7 @@ int main()
     }
 
     cout << "//**FIM DO PROGRAMA**//" << endl;
-    //end
+    // end
 
     return 0;
 }
